@@ -1,8 +1,8 @@
-#lang racket
-(require racket/trace)
+#lang sicp
+(#%require sicp-pict)
 
 (define (location wrd sent);this is a great exercise
-  (cond ((empty? sent) #f)
+  (cond ((null? sent) #f)
         ((equal? (car sent) wrd) 1)
         (#t (let( (sub (location wrd (cdr sent))) )
               (if (equal? sub #f)
@@ -28,7 +28,7 @@
   (define (fact-help cnt product)
     (if (> cnt n)
         product
-        (fact-help (add1 cnt) (* cnt product))))
+        (fact-help (inc cnt) (* cnt product))))
   (fact-help 1 1))
 (set! fact-iter fact-iter)
 
@@ -89,17 +89,17 @@
             (display " seconds"))))
 
 (define (differences lst)
-  (if (empty? (cdr lst))
+  (if (null? (cdr lst))
       '()
       (cons (- (cadr lst) (car lst)) (differences (cdr lst)))))
 
 (define (remove-once wrd sent)
-  (cond ((empty? sent) '())
+  (cond ((null? sent) '())
         ((equal? (car sent) wrd) (cdr sent))
         (#t (cons (car sent) (remove-once wrd (cdr sent))))))
 
 (define (remove-all wrd sent)
-  (cond ((empty? sent) '())
+  (cond ((null? sent) '())
         ((equal? (car sent) wrd) (remove-all wrd (cdr sent)))
         (#t (cons (car sent) (remove-all wrd (cdr sent))))))
 (set! remove-all remove-all)
@@ -110,27 +110,27 @@
       (cons wrd (copies (- n 1) wrd))))
 
 (define (member? wrd sent)
-  (cond ((empty? sent) #f)
+  (cond ((null? sent) #f)
         ((equal? (car sent) wrd) #t)
         (#t (member? wrd (cdr sent)))))
 (define (rem-dupls sent)
-  (cond ((empty? sent) '())
+  (cond ((null? sent) '())
         ((member? (car sent) (cdr sent)) (rem-dupls (cdr sent)))
         (#t (cons (car sent) (rem-dupls (cdr sent))))))
 
 (define (count-word sent wrd)
-  (cond ((empty? sent) 0)
+  (cond ((null? sent) 0)
         ((equal? (car sent) wrd) (+ 1 (count-word (cdr sent) wrd)))
         (#t (count-word (cdr sent) wrd))))
 
 (define (squares sent)
   (define (square x) (* x x))
-  (if (empty? sent)
+  (if (null? sent)
       '()
       (cons (square (car sent)) (squares (cdr sent)))))
 
 (define (ordered? sent)
-  (cond ((empty? (cdr sent)) #t)
+  (cond ((null? (cdr sent)) #t)
         ((> (car sent) (cadr sent)) #f)
         (#t (ordered? (cdr sent)))))
 
@@ -158,7 +158,7 @@
   (try first-guess))
 
 (define (substitute sent old new)
-  (cond ((empty? sent) '())
+  (cond ((null? sent) '())
         ((equal? (car sent) old) (cons new (substitute (cdr sent) old new)))
         (#t (cons (car sent) (substitute (cdr sent) old new)))))
 
@@ -192,11 +192,11 @@
       (* (term a)
          (product term (next a) next b))))
 
-(define (fecterial n) (product (lambda (x) x) 1 add1 n))
+(define (fecterial n) (product (lambda (x) x) 1 inc n))
 
 (define (pi-approx n)
   (define (pi-term x) (/ (* x (+ x 2))
-                         (square (add1 x))))
+                         (square (inc x))))
   (* 4.0
      (product pi-term 2 (lambda (x) (+ x 2)) n)))
 
@@ -221,4 +221,5 @@
 (define (rel-prime? x y)
   (= (gcd x y) 1))
 (define (prod-of-some-numbers n)
-  (filtered-accumulate * 1 (lambda (x) x) 1 add1 n (lambda (x) (rel-prime? n x))))
+  (filtered-accumulate * 1 (lambda (x) x) 1 inc n (lambda (x) (rel-prime? n x))))
+
