@@ -162,12 +162,12 @@
         ((equal? (car sent) old) (cons new (substitute (cdr sent) old new)))
         (#t (cons (car sent) (substitute (cdr sent) old new)))))
 
-(define f1 "fuck off")
-(define (f2) (display "fuck off"))
+(define f1 "f off")
+(define (f2) (display "f off"))
 (define (f3 x) (* x 10))
-(define f4 (lambda () (lambda () (display "fuck off"))))
+(define f4 (lambda () (lambda () (display "f off"))))
 (define (((f5)) x)
-  (cond ((> x 0) (display "fuck off") (newline) (((f5)) (- x 1)))))
+  (cond ((> x 0) (display "f off") (newline) (((f5)) (- x 1)))))
 (define (t f)
   (lambda (x) (f (f (f x)))) )
 
