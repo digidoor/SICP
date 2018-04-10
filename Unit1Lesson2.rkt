@@ -1,4 +1,6 @@
 #lang sicp
+(define (square x) (* x x))
+
 (define (fixed-point f first-guess)
   (define (close-enough? v1 v2)
     (< (abs (- v1 v2)) tolerance))
@@ -25,3 +27,31 @@
   (iterate 1
            inc
            (lambda (x) (< total ((lambda (y) (* y y)) (inc x))))))
+
+(define (substitute sent old new)
+  (if (null? sent)
+      '()
+      (if (equal? (car sent) old)
+          (cons new (substitute (cdr sent) old new))
+          (cons (car sent) (substitute (cdr sent) old new)))))
+
+(define (cubic a b c)
+  (lambda (x) (+ (* x x x)
+                 (* a x x)
+                 (* b x)
+                 c)))
+
+(define (compose f g)
+  (lambda (x) (f (g x))))
+
+(define (repeated f n)
+  (if (> n 1)
+      (compose f (repeated f (dec n)))
+      f))
+
+(define (my-repeated f n)
+  (if (> n 1)
+      (lambda (x) (f ((my-repeated f (dec n)) x)))
+      f))
+
+(define (double x) (* 2 x))
