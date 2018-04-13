@@ -1,5 +1,6 @@
 #lang sicp
 (define (square x) (* x x))
+(define (double x) (* 2 x))
 
 (define (fixed-point f first-guess)
   (define (close-enough? v1 v2)
@@ -54,4 +55,29 @@
       (lambda (x) (f ((my-repeated f (dec n)) x)))
       f))
 
-(define (double x) (* 2 x))
+;(define (my-repeated f n)
+;  (if (> n 0)
+;      (lambda (x) (f ((my-repeated f (dec n)) x)))
+;      (lambda (x) x)))
+
+;(define (my-repeated f n)
+;  (cond ((> n 1) (compose f (my-repeated f (dec n))))
+;        ((= n 1) f)
+;        ((= n 0) (lambda (x) x))))
+
+;(define ((my-repeated f n) x)
+;  (if (> n 1)
+;      (f ((my-repeated f (dec n)) x))
+;      (f x)))
+
+;(define (my-repeated f n)
+;  (define (loop i result)
+;    (if (= i n)
+;        result
+;        (loop (inc i) (lambda (x) (f (result x))))))
+;  (loop 1 f))
+
+(define (my-every f sent)
+  (if (null? sent)
+      '()
+      (cons (f (car sent)) (my-every f (cdr sent)))))
